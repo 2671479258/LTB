@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>个人信息中心</title>
+
+
+    <script type="text/javascript" src="js/vue-2.5.16.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script type="text/javascript" src="js/axios-0.18.0.min.js"></script>
+
+    <style>
+
+.profile a img {
+    transition: transform 0.3s ease; /* 添加过渡效果 */
+}
+
+.profile a:hover img {
+    transform: scale(1.3); /* 悬停时图片放大 1.1 倍 */
+}
+
+
+a {
+    text-decoration: none; /* 去掉下划线 */
+    color: inherit; /* 继承父元素的颜色，如果有的话 */
+}
+
+a:hover {
+    color: blue; /* 悬停时链接颜色变为灰色 */
+}
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color:#f5f7fa;
+            display: flex;
+        }
+         .search-container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin: 15px;
+        }
+
+        .search-container img {
+            margin-right: 15px;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+        }
+
+        .search-box input[type="text"] {
+            width: 300px;
+            padding: 10px 15px;
+            border: 2px solid black;
+            border-radius: 25px 0 0 25px;
+            outline: none;
+            color: #2c3e50;
+            font-size: 16px;
+        }
+
+        .search-box button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #f1c40f;
+            color: white;
+            font-size: 16px;
+            border-radius: 0 25px 25px 0;
+            cursor: pointer;
+            outline: none;
+            display: flex;
+            align-items: center;
+
+        }
+
+        .search-box button:hover {
+            background-color: #d4ac0d;
+        }
+
+        .search-box button i {
+            margin-right: 5px;
+        }
+
+
+    .city-list div {
+        background-color: white;
+        cursor: pointer;
+        padding: 5px 0;
+    }
+        .sidebar {
+            width: 200px;
+            height: 100vh; /* 设置高度为视窗高度 */
+            background-color: #f0f0f0;
+            border-right: 1px solid #ccc;
+            padding: 20px;
+            margin-left:35px;
+        }
+        .sidebar h2 {
+            margin-bottom: 20px;
+        }
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .sidebar li {
+            margin-bottom: 10px;
+        }
+        .sidebar a {
+            text-decoration: none;
+            color: #333;
+        }
+        .sidebar a:hover {
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+<div style="display:flex;flex-direction:column">
+ <div id="app2">
+
+        <div class="content" style="width: 1500px;background-color:white">
+        <div class="main-content" style="margin-left:20px;">
+            <div style="display:flex;flex-direction:row">
+                <div class="search-container">
+                    <div style="margin-left:15px;">
+                        <a href="index.html"><img src="images/logo.png" width="200px" height="100px"></a>
+                    </div>
+                    <div class="search-box">
+                        <input type="text" placeholder="Search...">
+                        <button type="button">
+                            <i class="iconfont icon-sousuo"></i> 搜索
+                        </button>
+                    </div>
+                     <div class='profile' v-if="username"  style="margin-left: 115px;display:flex;flex-direction:row">
+
+                        <a href="#"> <img v-if="profileUrl" :src="profileUrl" alt="Profile Image" style="width: 60px; height: 60px; border-radius: 50%;"></a>
+                            <div style="margin-top:15px;font-size:24px">{{ username }}</div>
+                         <div style="font-size: 22px;margin-top:15px;margin-left:35px"><a @click="logoutfunc">退出登录</a></div>
+                     </div>
+                     <div v-else style="display: flex;flex-direction:row">
+                    <div style="margin-left: 50px;"><a href="login.html"><i class="fas fa-user icon-demo"></i>登录</a></div>
+                    <div style="margin-left: 50px;"><i class="fas fa-user-plus icon-demo"></i>注册</div>
+                         </div>
+                    <div style="margin-left: 50px;"><i class="fas fa-shopping-cart icon-demo"></i>我的订单</div>
+                </div>
+            </div>
+        </div>
+        </div></div>
+
+<div id="app">
+    <el-container>
+        <!-- 左侧侧边栏 -->
+         <el-aside>
+            <div class="sidebar">
+                <div style="margin-left:35px;"><h2 style="color: #ef752d">个人中心</h2></div>
+                <el-menu
+                  :default-active="activeMenu"
+                  class="el-menu-vertical-demo"
+                  @select="handleSelect">
+                  <el-menu-item index="1">
+                    <a href="user_info.html" style="font-weight: bold">个人信息</a>
+                  </el-menu-item>
+                  <el-menu-item index="2">
+                    <a href="#">我的收藏</a>
+                  </el-menu-item>
+
+                  <el-menu-item index="3-1"><a href="my_order.html">酒店订单</a></el-menu-item>
+                  <el-menu-item index="3-2"><a href="my_flight_order.html">机票订单</a></el-menu-item>
+                  <el-menu-item index="3-3"><a href="#">火车票订单</a></el-menu-item>
+                  <el-menu-item index="3-4"><a href="#">其他订单</a></el-menu-item>
+                  <!-- 可以添加更多链接 -->
+                </el-menu>
+            </div>
+        </el-aside>
+        <el-main>
+<el-card>
+    <div slot="header">
+        <span>个人信息</span>
+    </div>
+    <div>
+        <el-form label-width="80px" size="small">
+            <el-form-item label="邮箱">
+                <el-input v-model="email" :disabled="!editMode" style="width: 200px;"></el-input>
+            </el-form-item>
+            <el-form-item label="电话">
+                <el-input v-model="phone" :disabled="!editMode" style="width: 200px;"></el-input>
+            </el-form-item>
+            <el-form-item label="简介">
+    <el-input type="textarea" v-model="bio" :disabled="!editMode" style="width: 300px; height: 100px;"></el-input>
+</el-form-item>
+            <el-form-item label="头像">
+                <!-- 显示用户头像的图片框 -->
+                <el-image :src="profile" style="width: 100px; height: 100px;"></el-image>
+                <el-button type="text" icon="el-icon-picture" @click="uploadAvatar" v-if="editMode">修改头像</el-button>
+            </el-form-item>
+        </el-form>
+        <div style="margin-left: 25px;">
+            <el-button type="primary" @click="editMode = true" v-if="!editMode">编辑</el-button>
+            <el-button type="success" @click="saveUserInfo" v-if="editMode">保存</el-button>
+            <el-button type="danger" @click="cancelEdit" v-if="editMode">取消</el-button>
+        </div>
+    </div>
+</el-card>
+</el-main>
+    </el-container>
+</div>
+</div>
+<script>
+new Vue({
+    el: '#app',
+    data: {
+        username: "",
+        profile: "",
+        phone: "",
+        email:"",
+        bio:"",
+        editMode: false, // 添加一个标志位，表示是否处于编辑模式
+    },
+    mounted() {
+        // 在页面加载完成后，发送 GET 请求获取用户信息
+        axios.get('http://127.0.0.1:8000/user/get_userinfo/', {
+            withCredentials: true,
+        })
+        .then(response => {
+            // 将后端返回的数据更新到 Vue 实例的 data 中
+            this.username = response.data.username;
+            this.profile=response.data.profile;
+            this.phone = response.data.mobile;
+            this.email=response.data.email;
+            this.bio=response.data.bio;
+        })
+        .catch(error => {
+            console.error('There was an error!', error);
+        });
+    },
+    methods: {
+        uploadAvatar() {
+    const inputElement = document.createElement('input');
+    inputElement.type = 'file';
+    inputElement.accept = 'image/*';
+    inputElement.onchange = (event) => {
+        const file = event.target.files[0];
+        const formData = new FormData();
+        formData.append('avatar', file);
+        axios.post('http://127.0.0.1:8000/user/upload_avatar/', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+            withCredentials: true,
+        })
+        .then(response => {
+            // 处理上传成功的逻辑
+            console.log("头像上传成功");
+            // 更新头像路径
+Vue.set(this, 'profile', response.data.profile_url);
+window.location.reload();
+        })
+        .catch(error => {
+            console.error('There was an error!', error);
+            // 处理上传失败的情况
+        });
+    };
+    inputElement.click();
+},
+        saveUserInfo() {
+
+            axios.post('http://127.0.0.1:8000/user/get_userinfo/', {
+                email: this.email,
+                mobile: this.phone,
+                bio:this.bio,
+            }, {
+                withCredentials: true,
+            })
+            .then(response => {
+                console.log("用户信息保存成功");
+                this.editMode = false; // 保存成功后退出编辑模式
+            })
+            .catch(error => {
+                console.error('There was an error!', error);
+            });
+        },
+         cancelEdit() {
+            // 用户点击取消按钮，退出编辑模式，不保存修改的信息
+            this.editMode = false;
+            // 这里可以重新获取用户信息，以还原到编辑之前的状态
+            this.getUserInfo();
+        },
+        getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) {
+                const cookieValue = parts.pop().split(';').shift();
+                return cookieValue.trim(); // 返回去除空格后的 cookie 值
+            }
+        },
+    }
+})
+</script>
+<script type="text/javascript" src="http://127.0.0.1:8080/js/user_info.js"></script>
+
+</body>
+</html>

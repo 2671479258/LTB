@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="iconfont.css">
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pikaday/css/pikaday.css">
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+            <script type="text/javascript" src="js/vue-2.5.16.js"></script>
+    <script type="text/javascript" src="js/axios-0.18.0.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        .notification-bar {
+            height: 30px;
+            background-color: #fffcd8;
+            font-size: 13px;
+            display: flex;
+            align-items: center; /* Center the content vertically */
+            justify-content: center; /* Center the content horizontally */
+            padding-left: 20px; /* Add some space on the left */
+        }
+        .exclamation-icon {
+            margin-right: 10px; /* Add space between the icon and the text */
+            color: red; /* Change the color of the icon */
+        }
+        .login_bg {
+            background-image: url("./images/login_bg2.jpg");
+            height: 500px;
+            background-size: cover; /* Scale the background image to cover the entire div */
+            background-position: center; /* Center the background image */
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+        }
+        .login_form {
+            background-color: white;
+            padding: 20px; /* Add padding to the form */
+            width: 300px; /* Set the width of the form */
+            height:420px;
+            margin-left:450px;
+
+        }
+        .form-input {
+            margin-bottom: 15px; /* Add some space between form inputs */
+            width: 100%; /* Set the width of form inputs */
+            padding: 10px; /* Add padding to form inputs */
+            box-sizing: border-box; /* Include padding in the width calculation */
+            border: 1px solid #ccc; /* Add a border to form inputs */
+            border-radius: 5px; /* Add rounded corners to form inputs */
+        }
+        .form-button {
+            width: 100%; /* Set the width of the button */
+            padding: 10px; /* Add padding to the button */
+            background-color: #007bff; /* Set the background color of the button */
+            color: white; /* Set the text color of the button */
+            border: none; /* Remove the border */
+            border-radius: 5px; /* Add rounded corners to the button */
+            cursor: pointer; /* Change cursor to pointer on hover */
+            transition: background-color 0.3s; /* Add transition effect to background color */
+            font-size:17px;
+            margin-top:25px;
+        }
+        .form-button:hover {
+            background-color: #0056b3; /* Darken the background color on hover */
+        }
+      a {
+    text-decoration: none; /* 去掉下划线 */
+    color: inherit; /* 继承父元素的颜色，如果有的话 */
+}
+
+a:hover {
+    color: blue; /* 悬停时链接颜色变为灰色 */
+}
+ .footer {
+            background-color: #f4f4f4;
+            padding: 20px 0;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <div style="height: 80px; background-color: white; display: flex; flex-direction: row">
+            <div style="margin-left: 200px"><img src="images/logo.png" width="190px" height="80px"></div>
+            <div style="margin-left: 800px; margin-top: 28px; font-size: 18px">
+                <a href="index.html"><i class="fas fa-home"></i> 首页</a>
+            </div>
+        </div>
+        <div class="notification-bar">
+            <i class="fas fa-exclamation-triangle exclamation-icon"></i>
+            依据《网络安全法》，为保障您相关功能的正常使用，账号需绑定手机，如您未绑定则登录后会引导您操作绑定。 新版《隐私政策》已上线，感谢您的支持。
+        </div>
+     <div class="login_bg" id="app2">
+    <form class="login_form" method="post" @submit.prevent="onSubmit">
+        <div style="font-size: 20px">新用户注册</div>
+        <div style="margin-top: 24px">
+            <input type="text" v-model="username" name="username" class="form-input" placeholder="用户名">
+            <span v-if="usernameError" style="color: red; margin-left: 10px;font-size:14px;">用户名至少包含4个字</span>
+            <input type="text" v-model="mobile" name="mobile" class="form-input" placeholder="国内手机号">
+             <span v-if="mobileError" style="color: red; margin-left: 10px;font-size:14px;">手机号不符合规范</span>
+
+            <input type="password" v-model="password" name="password" class="form-input" placeholder="登录密码">
+            <input type="password" v-model="password2" name="password2" class="form-input" placeholder="再次输入密码">
+            <span v-if="passwordError" style="color: red; margin-left: 10px;font-size:14px">密码不一致</span>
+        </div>
+
+        <button type="submit" class="form-button">注册</button>
+        <label style="font-size: 12px; margin-top: 20px;">
+            <input type="checkbox" v-model="agreeTerms"> 阅读并同意旅途帮的服务协议和个人信息保护政策
+        </label>
+        <div style="margin-left: 30px; margin-top: 15px; font-size: 15px;">
+            <a href="#">忘记密码</a>
+            <span> | </span>
+            <a href="#">验证码登录</a>
+            <span> | </span>
+            <a href="#">登录</a>
+        </div>
+    </form>
+</div>
+        <div class="footer">
+
+            <div style="margin-top: 10px;">
+                Copyright©1999-2024, ctrip.com. All rights reserved. | ICP证：沪B2-20050130 | 沪ICP备08023580号-3
+            </div>
+            <div>
+                沪公网备31010502002731号丨互联网药品信息服务资格证丨（沪）网械平台备字[2022]第00001号 | 沪网食备1050001号 | 旅游度假资质 | 平台信息
+            </div>
+            <div>
+                违法和不良信息举报电话021-22500846丨全国旅游投诉热线12345丨上海市旅游网站落实诚信建设主体责任承诺书加在页面最底部
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="http://127.0.0.1:8080/js/register.js"></script>
+</body>
+</html>

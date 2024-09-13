@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>旅途帮-首页</title>
+    <!-- 导入阿里的图标样式文件 -->
+    <link rel="stylesheet" href="iconfont.css">
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pikaday/css/pikaday.css">
+      <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+                <script type="text/javascript" src="js/vue-2.5.16.js"></script>
+
+    <script type="text/javascript" src="js/axios-0.18.0.min.js"></script>
+
+
+
+
+      <style>
+          .btn {
+    display: inline-block;
+    padding: 8px 16px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-primary {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #45a049;
+}
+
+.btn-secondary {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.btn-secondary:hover {
+    background-color: #ddd;
+}
+.profile a img {
+    transition: transform 0.3s ease; /* 添加过渡效果 */
+}
+
+.profile a:hover img {
+    transform: scale(1.3); /* 悬停时图片放大 1.1 倍 */
+}
+
+
+a {
+    text-decoration: none; /* 去掉下划线 */
+    color: inherit; /* 继承父元素的颜色，如果有的话 */
+}
+
+a:hover {
+    color: blue; /* 悬停时链接颜色变为灰色 */
+}
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+                            font-family: "Microsoft YaHei", Arial, sans-serif; /* 设置整个页面的字体为微软雅黑 */
+
+        }
+         .search-container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin: 15px;
+        }
+
+        .search-container img {
+            margin-right: 15px;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+        }
+
+        .search-box input[type="text"] {
+            width: 300px;
+            padding: 10px 15px;
+            border: 2px solid black;
+            border-radius: 25px 0 0 25px;
+            outline: none;
+            color: #2c3e50;
+            font-size: 16px;
+        }
+
+        .search-box button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #f1c40f;
+            color: white;
+            font-size: 16px;
+            border-radius: 0 25px 25px 0;
+            cursor: pointer;
+            outline: none;
+            display: flex;
+            align-items: center;
+
+        }
+
+        .search-box button:hover {
+            background-color: #d4ac0d;
+        }
+
+        .search-box button i {
+            margin-right: 5px;
+        }
+
+
+        .image-div {
+    width: 680px;
+    height: 300px;
+    background-image: url('images/bg1.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin-top: 10px;
+    margin-left: 40px; /* 向左移动 20px */
+}
+         .image-rounded {
+            border-radius: 15px;
+        }
+.input-container {
+        position: relative;
+        margin-left: 5px;
+        margin-top: 10px;
+    }
+    .input-container input[type="text"] {
+    width: 200px;
+    padding: 10px;
+    border: none; /* 这里修改为none */
+    border-radius: 5px;
+    outline: none;
+    box-shadow: 0 0 0 1px #ccc; /* 添加一个box-shadow来模拟边框 */
+}
+    .city-list {
+    position: absolute;
+    top: 100%; /* 确保城市列表在输入框下方显示 */
+    left: 0;
+    z-index: 9999;
+    max-height: 200px; /* 设置城市列表的最大高度 */
+    overflow-y: auto; /* 添加垂直滚动条 */
+    width: 100%; /* 可以设置宽度为100%或者其他值以适应输入框宽度 */
+    background-color: #fff; /* 设置背景色以便与页面内容区分 */
+    border: 1px solid #ddd; /* 添加边框以增强可视性 */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* 添加阴影以增强层次感 */
+}
+
+.city-list div {
+    padding: 8px; /* 设置每项的内边距 */
+    cursor: pointer; /* 添加鼠标悬停效果 */
+}
+
+.city-list div:hover {
+    background-color: #f0f0f0; /* 鼠标悬停时背景颜色变化 */
+}
+    </style>
+
+</head>
+<body>
+    <div class="content" id="app">
+        <div class="menu-box">
+            <!-- 展示与隐藏侧边栏 开始-->
+            <input type="checkbox" id="menu-btn">
+
+            <!-- 展示与隐藏侧边栏 结束-->
+            <div class="menu">
+                <!-- 侧边栏的标题 开始-->
+                <div class="menu-title">
+                    <h1>旅途帮</h1>
+                </div>
+                <!-- 侧边栏的标题 结束-->
+
+                <!-- 每一项导航 -->
+                <div class="menu-item">
+                    <input type="checkbox" id="menu-item1">
+                    <label for="menu-item1">
+                         <i class="fas fa-hotel icon-demo" style="color:#ee6d2c"></i>
+                     <span style="font-weight: bold;color:#ee6d2c">   <a href="#">酒店</a></span>
+                        <i class="menu-item-last iconfont icon-down"></i>
+                    </label>
+                    <div class="menu-content">
+                      <span>  <a href="index.html"> 国内酒店</a></span>
+                        <span><a href="#">国外酒店</a></span>
+
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                  <input type="checkbox" id="menu-item2">
+                    <label for="menu-item2">
+    <i class="fas fa-paper-plane icon-demo"></i>
+                       <span> <a href="plane_index.html"> 机票</a></span>
+
+                    </label>
+
+                </div>
+
+                <div class="menu-item">
+                    <input type="checkbox" id="menu-item3">
+                    <label for="menu-item3">
+                            <i class="fas fa-train icon-demo"></i>
+
+                        <span>火车票</span>
+                        <i class="menu-item-last iconfont icon-down"></i>
+                    </label>
+                    <div class="menu-content">
+                        <span>option1</span>
+                        <span>option2</span>
+                        <span>option3</span>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <input type="checkbox" id="menu-item4">
+                    <label for="menu-item3">
+    <i class="fas fa-suitcase-rolling icon-demo"></i>
+                        <span>旅游</span>
+                        <i class="menu-item-last iconfont icon-down"></i>
+                    </label>
+                    <div class="menu-content">
+                        <span>option1</span>
+                        <span>option2</span>
+                        <span>option3</span>
+                    </div>
+                </div>
+
+
+                <div class="menu-item">
+                    <input type="checkbox" id="menu-item5">
+                    <label for="menu-item3">
+                        <i class="fas fa-route icon-demo"></i>
+                        <span>攻略·景点</span>
+                        <i class="menu-item-last iconfont icon-down"></i>
+                    </label>
+                    <div class="menu-content">
+                        <span>option1</span>
+                        <span>option2</span>
+                        <span>option3</span>
+                    </div>
+                </div>
+
+
+                <div class="menu-item">
+                    <input type="checkbox" id="menu-item6">
+                    <label for="menu-item3">
+                        <i class="fas fa-ship icon-demo"></i>
+                        <span>汽车·船票</span>
+                        <i class="menu-item-last iconfont icon-down"></i>
+                    </label>
+                    <div class="menu-content">
+                        <span>option1</span>
+                        <span>option2</span>
+                        <span>option3</span>
+                    </div>
+                </div>
+
+
+                    <div class="menu-item">
+                    <input type="checkbox" id="menu-item7">
+                    <label for="menu-item3">
+                        <i class="fas fa-ticket-alt icon-demo"></i>
+                        <span>门票·活动</span>
+                        <i class="menu-item-last iconfont icon-down"></i>
+                    </label>
+                    <div class="menu-content">
+                        <span>option1</span>
+                        <span>option2</span>
+                        <span>option3</span>
+                    </div>
+                </div>
+
+                 <div class="menu-item">
+                    <input type="checkbox" id="menu-item8">
+                    <label for="menu-item3">
+                        <i class="fas fa-car icon-demo"></i>
+
+                        <span>用车</span>
+                        <i class="menu-item-last iconfont icon-down"></i>
+                    </label>
+                    <div class="menu-content">
+                        <span>option1</span>
+                        <span>option2</span>
+                        <span>option3</span>
+                    </div>
+                </div>
+
+                   <div class="menu-item">
+                    <input type="checkbox" id="menu-item9">
+                    <label for="menu-item3">
+                       <i class="fas fa-globe icon-demo"></i>
+                        <span>全球购</span>
+                        <i class="menu-item-last iconfont icon-down"></i>
+                    </label>
+                    <div class="menu-content">
+                        <span>option1</span>
+                        <span>option2</span>
+                        <span>option3</span>
+                    </div>
+                </div>
+
+                <div class="menu-item">
+                    <input type="checkbox" id="menu-item10">
+                    <label for="menu-item3">
+<i class="fas fa-credit-card icon-demo"></i>
+                        <span>全球购</span>
+                        <i class="menu-item-last iconfont icon-down"></i>
+                    </label>
+                    <div class="menu-content">
+                        <span>option1</span>
+                        <span>option2</span>
+                        <span>option3</span>
+                    </div>
+                </div>
+
+                  <div class="menu-item">
+                    <input type="checkbox" id="menu-item11">
+                    <label for="menu-item3">
+<i class="fas fa-building icon-demo"></i>
+                        <span>企业商游</span>
+                        <i class="menu-item-last iconfont icon-down"></i>
+                    </label>
+                    <div class="menu-content">
+                        <span>option1</span>
+                        <span>option2</span>
+                        <span>option3</span>
+                    </div>
+                </div>
+
+
+                <div class="set-line"></div>
+
+                <div class="menu-item">
+                    <label>
+                        <i class="menu-item-icon iconfont icon-a-08-shezhi"></i>
+                        <span>setting</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+      <!-- 引入Vue -->
+
+
+
+
+    <div id='app2' class="content" style="width: 1500px;background-color:white">
+        <div class="main-content">
+            <div style="display:flex;flex-direction:row">
+                <div class="search-container">
+                    <div style="margin-left:15px;">
+                        <img src="images/logo.png" width="200px" height="100px">
+                    </div>
+                    <div class="search-box">
+                        <input type="text" placeholder="Search...">
+                        <button type="button">
+                            <i class="iconfont icon-sousuo"></i> 搜索
+                        </button>
+                    </div>
+                     <div class='profile' v-if="username"  style="margin-left: 115px;display:flex;flex-direction:row">
+
+                        <a href="user_info.html"> <img v-if="profileUrl" :src="profileUrl" alt="Profile Image" style="width: 60px; height: 60px; border-radius: 50%;"></a>
+                            <div style="margin-top:15px;font-size:24px">[[ username ]]</div>
+                         <div style="font-size: 22px;margin-top:15px;margin-left:35px"><a @click="logoutfunc">退出登录</a></div>
+                     </div>
+                     <div v-else style="display: flex;flex-direction:row">
+                    <div style="margin-left: 50px;"><a href="login.html"><i class="fas fa-user icon-demo"></i>登录</a></div>
+                    <div style="margin-left: 50px;"><i class="fas fa-user-plus icon-demo"></i>注册</div>
+                         </div>
+                    <div style="margin-left: 50px;"><a href="my_order.html"><i class="fas fa-shopping-cart icon-demo"></i>我的订单</a></div>
+                </div>
+            </div>
+            <div style="display:flex;flex-direction:row;height:500px">
+                <div class="image-div">
+                    <div style="display:flex;flex-direction:row;">
+                        <div style="margin-left:25px;margin-top:25px;color:white;font-size:20px">预定酒店</div>
+                        <div style="margin-left:365px;margin-top:25px;font-size:20px">安心订，放心住</div>
+                    </div>
+<form @submit.prevent="submitForm">
+                    <div style="width: 640px; height: 100px; background-color: white; margin-left: 15px; margin-top: 20px; border: 1px solid #f0f0f0; border-radius: 10px;">
+                        <div style="display: flex;flex-direction:row">
+                   <div style="display: flex; flex-direction: column; margin-left: 10px; margin-top: 10px; position: relative; z-index: 999;">
+    <div>目的地/酒店房间</div>
+<div class="input-container">
+    <input type="text" id="destinationInput" placeholder="点击输入城市" @click="toggleCityList">
+    <div class="city-list" id="cityList" v-show="showCityList">
+        <!-- 使用 v-for 指令来渲染城市列表 -->
+        <div v-for="city in sortedCityList" :key="city.id" @click="fillCity(city.name)">
+            [[ city.name ]]
+        </div>
+    </div>
+</div>
+</div>
+
+                            <div style="display: flex; flex-direction: column; margin-left: 60px; margin-top: 10px;">
+                            <div>入住</div>
+                            <div style="margin-top:15px;" id="checkInDate">选择日期</div>
+                        </div>
+                        <div style="display: flex; flex-direction: column; margin-left: 100px; margin-top: 10px;">
+                            <div>退房</div>
+                            <div style="margin-top:15px;" id="checkOutDate">选择日期</div>
+                        </div>
+                        </div>
+                    </div>
+
+                    <div style="width: 640px; height: 80px; background-color: white; margin-left: 15px; margin-top: 25px; border-radius: 10px;">
+
+                        <div style="position: relative;margin-left: 15px;margin-top:4px;font-size:17px;display:flex;flex-direction:row">
+              <div>
+    <div>房间及住客</div>
+    <input type="text" readonly :value="roomGuestDisplay" @click="toggleRoomGuestList" style="cursor: pointer;margin-top:5px;height:30px">
+    <div v-if="showRoomGuestList" style="position: absolute; top: 100%; left: 0; background-color: white; border: 1px solid #ccc; border-radius: 5px; padding: 10px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+        <span>房间</span>
+        <div style="margin-left: 5px;">
+            <button type="button" class="btn btn-primary" @click="decreaseRoom">-</button>
+            <span>[[ rooms ]]</span>
+            <button type="button" class="btn btn-primary" @click="increaseRoom">+</button>
+        </div>
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <span>住客</span>
+        <div style="margin-left: 5px;">
+            <button type="button" class="btn btn-primary" @click="decreaseGuest">-</button>
+            <span>[[ guests ]]</span>
+            <button type="button" class="btn btn-primary" @click="increaseGuest">+</button>
+        </div>
+    </div>
+    <button type="button" class="btn btn-primary" @click="confirmRoomGuest" style="margin-top: 10px;">确定</button>
+</div>
+</div>
+                            <div style="margin-left: 10px; display: flex; font-size:17px;align-items: center;flex-direction:column;margin-top:5px;">
+    <div style="margin-right: 5px;">酒店级别：</div>
+    <div style="position: relative;">
+        <input type="text" readonly :value="selectedHotelLevel" @click="toggleHotelLevelList" style="cursor: pointer;height:30px">
+        <div v-if="showHotelLevelList" style="position: absolute; top: 100%; left: 0; background-color: white; border: 1px solid #ccc; border-radius: 5px; padding: 5px;">
+            <div id='hotellist' v-for="level in hotelLevels" :key="level" @click="selectHotelLevel(level)" style="cursor: pointer;">[[ level ]]</div>
+        </div>
+    </div>
+</div>
+        </div>
+<div style="margin-top: -35px; margin-left: 500px; position: relative;">
+    <div style="background-color: #4CAF50; display: inline-block; padding: 5px; border-radius: 5px;">
+        <i class="fas fa-search" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: white;"></i>
+        <button type="submit" style="color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; background-color: #4CAF50; margin-left: 25px;">查询</button>
+    </div>
+</div>
+                    </div>
+</form>
+
+                    <script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
+
+                    <div style="margin-top: 40px">
+                        <img src="images/gg1.png">
+                    </div>
+                    <div style="height: 250px;">
+                        <div style="display: flex;flex-direction:row">
+                            <div style="margin-top: 15px;margin-left:25px;font-size:22px;">酒店</div>
+                            <div style="margin-top: 15px;color: orange;font-size:22px;">推荐</div>
+                        </div>
+
+                        <div style="margin-top:10px;margin-left:10px;display:flex;flex-direction:row">
+                            <div style="display: flex;flex-direction:column">
+                                <div><img src="images/1.png" width=240px height=160px></div>
+                                <div style="font-size: 20px;font-weight:bold">上海新国际博览中心城</div>
+                            </div>
+                            <div style="display: flex;flex-direction:column;margin-left:10px">
+                                <div><img src="images/2.png" width=240px height=160px></div>
+                                <div style="font-size: 20px;font-weight:bold">上海外滩老码头Citi...</div>
+                            </div>
+                            <div style="display: flex;flex-direction:column;margin-left:10px">
+                                <div><img src="images/3.png" width=240px height=160px></div>
+                                <div style="font-size: 20px;font-weight:bold">上海新国际博览中心城</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-left: 75px;">
+                    <img src="images/bg2.png" width="400px" height="550px" class="image-rounded">
+                </div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript" src="http://127.0.0.1:8080/js/index.js"></script>
+</body>
+</html>
+

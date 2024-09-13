@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="iconfont.css">
+    <link rel="stylesheet" href="index.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pikaday/css/pikaday.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
+
+      <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="js/vue-2.5.16.js"></script>
+     <script type="text/javascript" src="js/axios-0.18.0.min.js"></script>
+    <title>Hotel Order</title>
+    <style>
+
+
+
+
+.select {
+    width: 100%;
+    max-width: 200px;
+    padding: 12px 20px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    color: #333;
+    background-color: #fff;
+    appearance: none;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    margin-top:15px;
+}
+.container{
+    margin-top: 15px;
+}
+.select:focus {
+    border-color: #007BFF;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.select option {
+    padding: 10px;
+}
+         /* 输入框容器样式 */
+    .input-container {
+        margin-top: 25px;
+        position: relative;
+    }
+
+    /* 输入框样式 */
+    .input-container input[type="text"],
+    .input-container input[type="email"],
+    .input-container input[type="tel"] {
+        width: 200px;
+        padding: 10px;
+        border: none;
+        border-bottom: 1px solid #ccc; /* 底部横线 */
+        box-sizing: border-box;
+        font-size: 16px;
+        outline: none; /* 去除默认的轮廓样式 */
+    }
+
+    /* 输入框聚焦时底部横线颜色 */
+    .input-container input[type="text"]:focus,
+    .input-container input[type="email"]:focus,
+    .input-container input[type="tel"]:focus {
+        border-bottom-color: #007bff; /* 聚焦时的底部横线颜色 */
+    }
+        body {
+            background-color:whitesmoke;
+                font-family: "Microsoft YaHei", Arial, sans-serif; /* 设置整个页面的字体为微软雅黑 */
+
+
+        }
+          .divider {
+            border-top: 1px dashed #000;
+            width: 100%;
+            margin-top: 20px;
+        }
+          a {
+    text-decoration: none; /* 去掉下划线 */
+    color: inherit; /* 继承父元素的颜色，如果有的话 */
+}
+
+a:hover {
+    color: blue; /* 悬停时链接颜色变为灰色 */
+}
+    </style>
+</head>
+<body>
+<div style="height: 75px;display:flex;flex-direction:row;background-color:white;">
+<div style="margin-left: 10%"><img src="images/logo.png" width="150px" height="75px"></div>
+    <div style="margin-left: 4%"><img src="images/step.png" width="400px" height="75px"></div>
+</div>
+    <div id="app" style="display:flex;flex-direction:row;margin-top:40px;height: 1500px">
+        <div>
+<div style="margin-left:150px;width: 900px;height:400px;background-color: white;margin-top:10px;">
+
+<div style="margin-left:15px;margin-top:20px;">
+
+<div style="font-size:25px; font-weight:1000;">{{ hotel.name }}</div>
+    <div style="margin-top:10px">{{ hotel.detail_location }}</div>
+      <div style="font-weight:bold;margin-top:10px">{{ room.name }}</div>
+    <div style="display: flex;flex-direction:row;margin-top:10px">
+<div style="margin-left: 5px;">
+          <i class="fas fa-user"></i>
+                {{ room.room_capacity }}人
+        </div>
+
+
+        <div style="margin-left: 15px">
+          <i class="fas fa-bed"></i>
+                {{ room.description }}
+        </div>
+
+
+        <div v-if="room.has_breakfast" style="margin-left: 15px;">
+                <i class="fas fa-utensils"></i>有早餐
+            </div>
+            <div v-else style="margin-left: 15px;">
+                <i class="fas fa-utensils"></i>无早餐
+            </div>
+<div style="color: dodgerblue; font-weight: 1000;margin-left:500px;"><a href="#">显示更多设施</a></div>
+
+        </div>
+<div class="divider"></div>
+<div style="font-weight:bold;margin-top:10px">订房必读 <a href="" style="margin-top:10px;margin-left: 700px;color:dodgerblue">查看全部</a></div>
+<div style="margin-top: 10px">
+    <div style="display: flex;flex-direction:row">
+    <i class="fas fa-exclamation-circle"></i>
+    <div style="width: 750px">为贯彻落实《上海市生活垃圾管理条例》相关规定，推进生活垃圾源头减量，上海市文化和旅游局特制定《关于本市旅游住宿业不主动提供客房一次性日用品的实施意见》，
+        2019年7月1日起，上海市旅游住宿业将不再主动提供牙刷、梳子、浴擦、剃须刀、指甲锉、鞋擦这些一次性日用品。若需要可咨询酒店。</div>
+</div>
+
+</div>
+    <div class="divider"></div>
+    <div style="color: #ff6f00;font-size: 18px;margin-left:15px;margin-top:10px;font-weight:1000">
+        <ul>
+            <li>真划算！本单最高优惠8.6折</li>
+             <li>房源数量紧张，赶紧下单吧!</li>
+             <li>无需等待！此订单可立即确认</li>
+        </ul>
+    </div>
+
+
+
+
+    </div>
+
+
+</div>
+
+ <form @submit.prevent="submitForm">
+            <div style="background-color: white;margin-top:20px;width:900px;margin-left:150px;height:600px">
+
+                <div style="display:flex;flex-direction:row;margin-left:5px;">
+
+           <div style="display: flex; flex-direction: column; margin-left: 20px; margin-top: 30px;">
+                            <div>入住日期</div>
+                            <div style="margin-top:15px;" id="checkInDate">选择日期</div>
+                        </div>
+                        <div style="display: flex; flex-direction: column; margin-left: 100px; margin-top: 30px;">
+                            <div>退房日期</div>
+                            <div style="margin-top:15px;" id="checkOutDate">选择日期</div>
+                        </div>
+                    <div style="display: flex; flex-direction: column; margin-left: 120px; margin-top: 30px;">
+    <div>房间数</div>
+
+            <select v-model="roomCount" @change="calculateTotalPrice" style="margin-top:15px;">
+                <option v-for="n in 5" :key="n" :value="n">{{ n }}</option>
+            </select>
+</div>
+    </div>
+                    <div class="divider"></div>
+                <div style="margin-left: 15px;margin-top:15px">
+                <div style="font-size: 22px;font-weight:1000">住客资料</div>
+                    <div style="color: #8592a6">请按实际入住人数填写，姓名与证件保持一致</div>
+
+
+<div class="input-container">
+            <div style="margin-left: 9px;">住客姓名</div>
+            <input type="text" v-model="guestName">
+        </div>
+     <div class="input-container">
+            <div style="margin-left: 9px;">电子邮箱（选填）</div>
+            <input type="text" v-model="email">
+        </div>
+
+        <div class="input-container">
+            <div style="margin-left: 9px;">电话号码</div>
+            <input type="tel" v-model="phoneNumber">
+        </div>
+
+        <div class="container">
+            <div>预计到店时间</div>
+            <select v-model="estimatedArrivalTime" class="select">
+                <option v-for="option in estimatedArrivalOptions" :value="option.value">{{ option.label }}</option>
+            </select>
+            <div style="margin-top: 15px;">房间整晚保留</div>
+        </div>
+
+</div>
+
+
+            </div>
+            <div style="background-color: white;margin-top:20px;width:900px;margin-left:150px;height:100px">
+                <div style="margin-left:25px;margin-top:5px; ">
+                <div style="font-size: 22px;font-weight:1000;">特别要求</div>
+                    <div style="font-size: 16px;margin-top:10px;color:#8592a6">该酒店不支持填写特殊要求</div>
+                    </div>
+                </div>
+
+              <div style="background-color: white;margin-top:20px;width:900px;margin-left:150px;height:100px">
+                <div style="margin-left:25px;margin-top:5px; ">
+                <div style="font-size: 22px;font-weight:1000;">发票信息</div>
+                    <div style="font-size: 16px;margin-top:10px;color:#8592a6">如需要发票，可向酒店索取（酒店可开普票、不可开专票）</div>
+                    </div>
+                </div>
+
+            <div style="margin-top:30px;margin-left:150px"><span style="color: #0065f2"><a href="#">预订条款，个人信息授权协议</a></span>，前往下一步即代表已阅读并同意上述条件</div>
+<div style="background-color: white; margin-top: 20px; width: 900px; margin-left: 150px; height: 100px; display: flex; align-items: center;">
+    <div style="display: flex; flex-direction: row; width: 100%;">
+        <div style="margin-left: 20px;">在线付<span style="color: #0065f2;font-size:22px"> ¥{{ totalPrice }}</span></div>
+    <button type="submit" style="margin-left: 600px; background-color: orange; color: white; font-size: 25px; padding: 10px 20px; border-radius: 5px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); text-align: center; cursor: pointer; transition: background-color 0.3s ease, box-shadow 0.3s ease;"
+    onmouseover="this.style.backgroundColor='#e69500'; this.style.boxShadow='0 6px 8px rgba(0, 0, 0, 0.15)';"
+    onmouseout="this.style.backgroundColor='orange'; this.style.boxShadow='0 4px 6px rgba(0, 0, 0, 0.1)';">
+    去支付
+</button>
+    </div>
+
+
+</div>
+  <div style="margin-top: 40px;margin-left:150px;color:#0065f2"><a href="#"><  更改我的选择</a></div>
+
+</form>
+
+</div>
+
+
+        <div style="display: flex;flex-direction:column">
+<div style="margin-left:20px;width: 390px;background-color:white;height:480px;margin-top:20px;">
+<div style="margin-left: 15px;margin-top:15px;">
+    <div style="font-size:17px;font-weight:1000">费用明细</div>
+    <div style="margin-top: 20px">
+        <div style="display: flex;flex-direction:row">
+            <div style="font-size:17px;font-weight:1000">在线支付</div>
+            <div style="margin-left: 190px;color:#287dfa">¥{{ totalPrice }}</div>
+        </div>
+        <div>{{ formattedCheckInDate }}</div>
+<div>{{ formattedCheckOutDate }}(离店日)</div>
+         <div class="divider"></div>
+        <div style="display: flex;flex-direction:row;margin-top:25px;">
+            <div style="font-size:17px;font-weight:1000">应付金额</div>
+            <div style="margin-left: 190px;color:#287dfa">    ¥{{ totalPrice }}
+</div>
+        </div>
+         <div class="divider"></div>
+        <div style="color: #06aebd;margin-top:10px">限时取消</div>
+        <div style="font-size: 14px;width:330px;color:#8592a6;margin-top:10px">入住当天18:00前可免费取消。逾期不可取消，若未入住将收取您全额费用¥310（如用优惠券则以券后支付价为准）。订单需等酒店或供应商确认后生效，订单确认结果以携程短信、邮件或app通知为准，如订单不确认将全额退款至您的付款账户。</div>
+ <div class="divider"></div>
+                <div style="margin-top:10px">说明</div>
+                <div style="font-size: 14px;width:330px;color:#8592a6;margin-top:10px">预订服务由携程旗下上海赫程国际旅行社有限公司及其分公司提供、住宿服务由酒店提供，交易款项由商家委托携程旗下子公司统一收取。</div>
+
+
+
+    </div>
+</div>
+
+    </div>
+            <div style="margin-left: 25px; margin-top: 25px; background-color: white; width: 390px; height: 80px; display: flex; justify-content: center; align-items: center;">
+    <a style="color: dodgerblue;">旅途帮专业服务 全程保障</a>
+</div>
+    </div>
+    </div>
+
+<div style="background-color: #f1f1f1; padding: 20px; text-align: center; font-size: 14px; color: #555; border-top: 1px solid #e1e1e1; margin-top: 90px;">
+    <p style="margin: 0;">Copyright © 1999-2021, ctrip.com. All rights reserved. | ICP证：沪B2-20050130</p>
+</div>
+  <script type="text/javascript" src="http://127.0.0.1:8080/js/hotel_order.js"></script>
+
+</body>
+</html>
